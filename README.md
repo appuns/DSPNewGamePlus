@@ -43,6 +43,8 @@ If you have any problems or suggestions, please contact DISCORD MSP Modding serv
 不具合、改善案などありましたら、DISCORD「DysonSphereProgram_Jp」サーバー**Appun#8284**までお願いします。
 
 ## Change Log　更新履歴
+### v1.1.3
+- Fixed an problem when loading technologies. 技術を読み込んだ際の問題を解消しました。
 ### v1.1.2
 - Supported the game version 0.9.24.11286. ゲームバージョン0.9.24.11286に対応しました。
 - You can select what to load. 読み込む内容を選択できるようになりました。

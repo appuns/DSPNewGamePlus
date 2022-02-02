@@ -23,7 +23,7 @@ using System.Security.Permissions;
 namespace DSPNewGamePlus
 {
 
-    [BepInPlugin("Appun.DSP.plugin.NewGamePlus", "DSPNewGamePlus", "1.1.2")]
+    [BepInPlugin("Appun.DSP.plugin.NewGamePlus", "DSPNewGamePlus", "1.1.3")]
     [BepInProcess("DSPGAME.exe")]
 
     public class Main : BaseUnityPlugin
@@ -35,6 +35,8 @@ namespace DSPNewGamePlus
 
         public void Start()
         {
+            Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+
             LogManager.Logger = Logger;
 
             UI.Create();
@@ -51,11 +53,11 @@ namespace DSPNewGamePlus
             BinaryWriter binaryWriter = new BinaryWriter(fileStream);
 
             //インベントリ
-            PlayerData.Export(binaryWriter);   
-            //メカ
-            MechaData.Export(binaryWriter);
+            PlayerData.Export(binaryWriter);
             //ヒストリ
             HistoryData.Export(binaryWriter);
+            //メカ
+            MechaData.Export(binaryWriter);
 
             binaryWriter.Close(); 
             fileStream.Close();
@@ -83,10 +85,10 @@ namespace DSPNewGamePlus
 
             //インベントリ
             PlayerData.Import(BinaryReader);
-            //メカ
-            MechaData.Import(BinaryReader);
             //ヒストリ
             HistoryData.Import(BinaryReader);
+            //メカ
+            MechaData.Import(BinaryReader);
 
 
             BinaryReader.Close();
@@ -95,7 +97,7 @@ namespace DSPNewGamePlus
             UI.openedMessageBox = false;
         }
 
-        public static void Update()
+        void Update()
         {
             if (UI.openedMessageBox)
             {
@@ -105,6 +107,39 @@ namespace DSPNewGamePlus
                     UI.messageBox.FadeOut();
                 }
             }
+            //if (Input.GetKeyDown(KeyCode.F1))
+            //{
+
+            //    var writer = new System.IO.StreamWriter("test.txt");
+            //    foreach (KeyValuePair<int, TechState> keyValuePair2 in GameMain.history.techStates)
+            //    {
+            //        //w.Write(keyValuePair2.Key);
+            //        //w.Write(keyValuePair2.Value.unlocked);
+            //        //w.Write(keyValuePair2.Value.curLevel);
+            //        //w.Write(keyValuePair2.Value.maxLevel);
+            //        //w.Write(keyValuePair2.Value.hashUploaded);
+            //        //w.Write(keyValuePair2.Value.hashNeeded);
+
+            //        TechProto techProto = LDB.techs.Select(keyValuePair2.Key);
+            //        //if (techProto != null)
+            //        //{
+
+            //        //    LogManager.Logger.LogInfo($"  Name[{techProto.Name.Translate()}]    Key[{keyValuePair2.Key}]  unlocked[{keyValuePair2.Value.unlocked}]  ");
+            //        //    writer.WriteLine(techProto.Name.Translate() + "," + keyValuePair2.Key + "," + keyValuePair2.Value.unlocked + "," + keyValuePair2.Value.curLevel + "," + keyValuePair2.Value.maxLevel + "," + keyValuePair2.Value.hashUploaded + "," + keyValuePair2.Value.hashNeeded);
+            //        //}
+            //        //else
+            //        //{
+            //        LogManager.Logger.LogInfo($" Key[{keyValuePair2.Key}]  unlocked[{keyValuePair2.Value.unlocked}]  ");
+            //        writer.WriteLine(keyValuePair2.Key + "," + keyValuePair2.Value.unlocked + "," + keyValuePair2.Value.curLevel + "," + keyValuePair2.Value.maxLevel + "," + keyValuePair2.Value.hashUploaded + "," + keyValuePair2.Value.hashNeeded);
+
+            //        //}
+            //    }
+            //    writer.Close();
+
+            //}
+
+
+
         }
 
 

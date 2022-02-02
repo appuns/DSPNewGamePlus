@@ -25,6 +25,7 @@ namespace DSPNewGamePlus
         {
             var history = GameMain.history;
 
+
             w.Write(7);
             w.Write(history.recipeUnlocked.Count);
             //レシピ
@@ -64,7 +65,7 @@ namespace DSPNewGamePlus
                 w.Write(keyValuePair2.Value.hashUploaded);
                 w.Write(keyValuePair2.Value.hashNeeded);
             }
-            //w.Write(history.autoManageLabItems);
+            //w.Write(history.autoManageLabItems); 
             //w.Write(history.currentTech);
             //w.Write(history.techQueue.Length);
             //for (int i = 0; i < history.techQueue.Length; i++)
@@ -199,7 +200,10 @@ namespace DSPNewGamePlus
             //LogManager.Logger.LogInfo("-------------------------------------history.inport techState");
 
             //技術研究＆性能強化
+            history.techStates = new Dictionary<int, TechState>();
+
             int num6 = r.ReadInt32();
+            //LogManager.Logger.LogInfo($" num6[{num6}]  ");
             for (int m = 0; m < num6; m++)
             {
                 int num7 = r.ReadInt32();
@@ -213,6 +217,15 @@ namespace DSPNewGamePlus
 
                 if (techProto != null)
                 {
+                    if (history.techStates.ContainsKey(num7))
+                    {
+                        history.techStates.Remove(num7);
+                    }
+
+
+                    LogManager.Logger.LogInfo($"Contain [{history.techStates.ContainsKey(num7)}]  Name[{techProto.Name.Translate()}]    Key[{num7}]  unlocked[{techState.unlocked}]  ");
+
+
                     //techState.hashNeeded = techProto.GetHashNeeded(techState.curLevel);
                     //	if (techProto.Items.Length != 0 && techProto.Items[0] == 6006)
                     //	{
@@ -220,26 +233,55 @@ namespace DSPNewGamePlus
                     //	}
                     if (UI.TechnologiesEnable && techProto.ID < 2000 || UI.UpgradesEnable && techProto.ID > 2000) //レシピorアップグレードを読み込むなら
                     {
+                        techState.hashNeeded = techProto.GetHashNeeded(techState.curLevel);
+                        if (techProto.Items.Length != 0 && techProto.Items[0] == 6006)
+                        {
+                            techState.uPointPerHash = techProto.ItemPoints[0];
+                        }
                         history.techStates.Add(num7, techState);
                     }
+                    //else
+                    //{
+                    //    int upoint = 0;
+                    //    if (techProto.Items.Length != 0 && techProto.Items[0] == 6006)
+                    //    {
+                    //        upoint = techProto.ItemPoints[0];
+                    //    }
+                    //    TechState value = new TechState(false, techProto.Level, techProto.MaxLevel, 0L, techProto.GetHashNeeded(techProto.Level), upoint);
+                    //    history.techStates.Add(num7, value);
+                    //}
 
                 }
             }
-            //残りハッシュ？
-            //TechProto[] dataArray = LDB.techs.dataArray;
-            //for (int n = 0; n < dataArray.Length; n++)
-            //{
-            //    if (!history.techStates.ContainsKey(dataArray[n].ID))
-            //    {
-            //        int upoint = 0;
-            //        if (dataArray[n].Items.Length != 0 && dataArray[n].Items[0] == 6006)
-            //        {
-            //            upoint = dataArray[n].ItemPoints[0];
-            //        }
-            //        TechState value2 = new TechState(false, dataArray[n].Level, dataArray[n].MaxLevel, 0L, dataArray[n].GetHashNeeded(dataArray[n].Level), upoint);
-            //        history.techStates.Add(dataArray[n].ID, value2);
-            //    }
-            //}
+
+            //読み込んでないdatestateは初期化
+            TechProto[] dataArray = LDB.techs.dataArray;
+            for (int n = 0; n < dataArray.Length; n++)
+            {
+                if (!history.techStates.ContainsKey(dataArray[n].ID))
+                {
+                    int upoint = 0;
+                    if (dataArray[n].Items.Length != 0 && dataArray[n].Items[0] == 6006)
+                    {
+                        upoint = dataArray[n].ItemPoints[0];
+                    }
+                    TechState value2 = new TechState(false, dataArray[n].Level, dataArray[n].MaxLevel, 0L, dataArray[n].GetHashNeeded(dataArray[n].Level), upoint);
+                    history.techStates.Add(dataArray[n].ID, value2);
+                }
+            }
+
+            //ダイソンスフィアプログラムのアンロック
+            TechState techState2 = default(TechState);
+            techState2.unlocked = true;
+            techState2.curLevel = 0;
+            techState2.maxLevel = 0;
+            techState2.hashUploaded = 1;
+            techState2.hashNeeded = 1;
+            if (history.techStates.ContainsKey(1))
+            {
+                history.techStates.Remove(1);
+            }
+            history.techStates.Add(1, techState2);
 
             //history.autoManageLabItems = r.ReadBoolean();
             //history.currentTech = r.ReadInt32();

@@ -70,14 +70,14 @@ namespace DSPNewGamePlus
             //    mecha.drones[i].Export(w);
             //}
 
-            //mecha.appearance.Export(w);
-            //mecha.diyAppearance.Export(w);
-            //w.Write(mecha.diyItems.items.Count);
-            //foreach (KeyValuePair<int, int> keyValuePair in mecha.diyItems.items)
-            //{
-            //    w.Write(keyValuePair.Key);
-            //    w.Write(keyValuePair.Value);
-            //}
+            mecha.appearance.Export(w);
+            mecha.diyAppearance.Export(w);
+            w.Write(mecha.diyItems.items.Count);
+            foreach (KeyValuePair<int, int> keyValuePair in mecha.diyItems.items)
+            {
+                w.Write(keyValuePair.Key);
+                w.Write(keyValuePair.Value);
+            }
             //w.Write(2119973658);
         }
 
@@ -189,90 +189,91 @@ namespace DSPNewGamePlus
             //}
             //mecha.droneLogic.ReloadStates();
             //mecha.appearance.ResetAppearance();
-            //mecha.diyAppearance.ResetAppearance();
-            //mecha.diyItems.Clear();
-            //if (num < 5)
-            //{
-            //    if (num >= 1)
-            //    {
-            //        int num2 = r.ReadInt32();
-            //        for (int j = 0; j < num2; j++)
-            //        {
-            //            if (j < 8)
-            //            {
-            //                mecha.appearance.mainColors[j].r = r.ReadByte();
-            //                mecha.appearance.mainColors[j].g = r.ReadByte();
-            //                mecha.appearance.mainColors[j].b = r.ReadByte();
-            //                mecha.appearance.mainColors[j].a = r.ReadByte();
-            //            }
-            //            else
-            //            {
-            //                r.ReadByte();
-            //                r.ReadByte();
-            //                r.ReadByte();
-            //                r.ReadByte();
-            //            }
-            //        }
-            //        if (num >= 3)
-            //        {
-            //            for (int k = 0; k < 64; k++)
-            //            {
-            //                for (int l = 0; l < num2; l++)
-            //                {
-            //                    if (l < 8)
-            //                    {
-            //                        mecha.appearance.partColors[k, l].r = r.ReadByte();
-            //                        mecha.appearance.partColors[k, l].g = r.ReadByte();
-            //                        mecha.appearance.partColors[k, l].b = r.ReadByte();
-            //                        mecha.appearance.partColors[k, l].a = r.ReadByte();
-            //                    }
-            //                    else
-            //                    {
-            //                        r.ReadByte();
-            //                        r.ReadByte();
-            //                        r.ReadByte();
-            //                        r.ReadByte();
-            //                        //}
-            //                    }
-            //                }
-            //            }
-            //        }
-            //        LogManager.Logger.LogInfo("mecaImport 4 ");
-            //        if (num >= 2)
-            //        {
-            //            mecha.appearance.partHideMask = r.ReadUInt64();
-            //            if (num >= 3)
-            //            {
-            //                mecha.appearance.partCustomMask = r.ReadUInt64();
-            //            }
-            //            mecha.appearance.customArmor.Import(r);
-            //            if (r.ReadInt32() != 2119973658)
-            //            {
-            //                throw new Exception("Corrupted Mecha Data");
-            //            }
-            //        }
-            //        mecha.appearance.CopyTo(mecha.diyAppearance);
-            //        return;
-            //    }
-            //mecha.appearance.Import(r);
-            //mecha.diyAppearance.Import(r);
-            //if (num >= 6)
-            //{
-            //int num3 = r.ReadInt32();
-            //for (int m = 0; m < num3; m++)
-            //{
-            //    int key = r.ReadInt32();
-            //    int value = r.ReadInt32();
-            //    mecha.diyItems.items[key] = value;
-            //}
-            //}
-            //if (r.ReadInt32() != 2119973658)
-            //{
-            //    throw new Exception("Corrupted Mecha Data");
-            //}
+
+            mecha.diyAppearance.ResetAppearance();
+            mecha.diyItems.Clear();
+            if (num < 5)
+            {
+                if (num >= 1)
+                {
+                    int num2 = r.ReadInt32();
+                    for (int j = 0; j < num2; j++)
+                    {
+                        if (j < 8)
+                        {
+                            mecha.appearance.mainColors[j].r = r.ReadByte();
+                            mecha.appearance.mainColors[j].g = r.ReadByte();
+                            mecha.appearance.mainColors[j].b = r.ReadByte();
+                            mecha.appearance.mainColors[j].a = r.ReadByte();
+                        }
+                        else
+                        {
+                            r.ReadByte();
+                            r.ReadByte();
+                            r.ReadByte();
+                            r.ReadByte();
+                        }
+                    }
+                    if (num >= 3)
+                    {
+                        for (int k = 0; k < 64; k++)
+                        {
+                            for (int l = 0; l < num2; l++)
+                            {
+                                if (l < 8)
+                                {
+                                    mecha.appearance.partColors[k, l].r = r.ReadByte();
+                                    mecha.appearance.partColors[k, l].g = r.ReadByte();
+                                    mecha.appearance.partColors[k, l].b = r.ReadByte();
+                                    mecha.appearance.partColors[k, l].a = r.ReadByte();
+                                }
+                                else
+                                {
+                                    r.ReadByte();
+                                    r.ReadByte();
+                                    r.ReadByte();
+                                    r.ReadByte();
+                                    //}
+                                }
+                            }
+                        }
+                    }
+                    LogManager.Logger.LogInfo("mecaImport 4 ");
+                    if (num >= 2)
+                    {
+                        mecha.appearance.partHideMask = r.ReadUInt64();
+                        if (num >= 3)
+                        {
+                            mecha.appearance.partCustomMask = r.ReadUInt64();
+                        }
+                        mecha.appearance.customArmor.Import(r);
+                        if (r.ReadInt32() != 2119973658)
+                        {
+                            throw new Exception("Corrupted Mecha Data");
+                        }
+                    }
+                    mecha.appearance.CopyTo(mecha.diyAppearance);
+                    return;
+                }
+                mecha.appearance.Import(r);
+                mecha.diyAppearance.Import(r);
+                if (num >= 6)
+                {
+                    int num3 = r.ReadInt32();
+                    for (int m = 0; m < num3; m++)
+                    {
+                        int key = r.ReadInt32();
+                        int value = r.ReadInt32();
+                        mecha.diyItems.items[key] = value;
+                    }
+                }
+                //if (r.ReadInt32() != 2119973658)
+                //{
+                //    throw new Exception("Corrupted Mecha Data");
+                //}
+            }
+
+
         }
-
-
-
     }
 }
